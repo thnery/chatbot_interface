@@ -11,13 +11,13 @@ global vectorizer
 vectorizer = HashingVectorizer(n_features=3)
 
 def load_data():
-    texts = []
-    with open('dialogo.csv') as csvfile:
-        reader = csv.reader(csvfile, delimiter=',')
-        for row in reader:
-            texts.append(row[1])
+    return ["Oi", "Tudo bem?", "Qual a sua idade?", "Como encerro este chat?", "Adeus"]
+    # with open('dialogo.csv') as csvfile:
+    #     reader = csv.reader(csvfile, delimiter=',')
+    #     for row in reader:
+    #         texts.append(row[1])
 
-    return texts
+    # return texts
 
 def train():
     data = load_data()
@@ -26,8 +26,22 @@ def train():
     vector = vectorizer.transform(data)
 
     result = np.array(vector.toarray())
+    responses = ["Seja bem vindo", "Tudo", "Minha idade e indefinida", "Digite adeus", "Ate logo"]
 
-    np.save('result', result)
+    arr = []
+    c = 0
+    for i in result:
+        print(i)
+        arr.append([i, responses[c]])
+        c += 1
+
+    # print(arr)
+    np.save('result', arr)
+    print(np.load('result.npy'))
+
+    # print(np.append(result, responses))
+
+    # np.save('result', result)
     #print(np.load('result.npy'))
 
 def transform_input(text):
