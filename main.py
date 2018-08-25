@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import csv
 import click
 import pandas as pd
 import numpy as np
@@ -7,12 +8,16 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_extraction.text import HashingVectorizer
 
 global vectorizer
-vectorizer = HashingVectorizer(n_features=20)
+vectorizer = HashingVectorizer(n_features=3)
 
 def load_data():
-    return ["The quick brown fox jumped over the lazy dog.",
-		"The dog.",
-		"The fox"]
+    texts = []
+    with open('dialogo.csv') as csvfile:
+        reader = csv.reader(csvfile, delimiter=',')
+        for row in reader:
+            texts.append(row[1])
+
+    return texts
 
 def train():
     data = load_data()
@@ -23,10 +28,9 @@ def train():
     result = np.array(vector.toarray())
 
     np.save('result', result)
-    print(np.load('result.npy'))
+    #print(np.load('result.npy'))
 
 def transform_input(text):
-    #vectorizer.fit([text])
     return vectorizer.transform([text])
 
 @click.command()
